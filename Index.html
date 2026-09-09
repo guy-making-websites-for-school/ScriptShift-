@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScriptShift — Powered by Scripty AI</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tesseract.js CDN for OCR capabilities -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #080c14;
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+    
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.4);
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.5);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .tab-active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b0f19; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between py-8 px-4">
+
+  <main class="max-w-[640px] w-full mx-auto space-y-6 flex-grow">
+    
+    <!-- Branding Header -->
+    <header class="text-center space-y-2 py-2">
+      <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-xs font-semibold text-sky-400 mb-1">
+        <span>⚡ Powered by Scripty AI</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight gradient-text">ScriptShift</h1>
+      <p class="text-sm text-slate-400 font-medium">Shift Languages. Uncover Cultures.</p>
+    </header>
+
+    <div class="glass-panel p-1.5 rounded-2xl flex gap-1 border border-slate-800">
+      <button id="tabTextBtn" onclick="switchTab('text')" class="flex-1 py-3 px-3 rounded-xl font-semibold text-xs md:text-sm text-slate-400 tab-active transition-all flex items-center justify-center gap-2">
+        <span>✏️</span> Text Input
+      </button>
+      <button id="tabImageBtn" onclick="switchTab('image')" class="flex-1 py-3 px-3 rounded-xl font-semibold text-xs md:text-sm text-slate-400 transition-all flex items-center justify-center gap-2">
+        <span>🖼️</span> Image OCR
+      </button>
+    </div>
+
+    <div id="panelText" class="glass-panel p-5 rounded-2xl space-y-3 border border-slate-800/80 shadow-xl">
+      <div class="flex justify-between items-center">
+        <label for="inputText" class="text-xs font-bold text-slate-400 uppercase tracking-wider">Source Foreign Script</label>
+      </div>
+      <textarea id="inputText" dir="auto" rows="5" placeholder="Paste foreign text here (e.g. Arabic, French, Japanese)..." class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-4 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all text-base leading-relaxed"></textarea>
+    </div>
+
+    <div id="panelImage" class="hidden glass-panel p-5 rounded-2xl space-y-4 border border-slate-800/80 shadow-xl">
+      <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Upload Image for OCR Extraction</label>
+      
+      <div id="dropZone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)" class="border-2 border-dashed border-slate-700 hover:border-sky-500/60 rounded-xl p-6 text-center bg-slate-950/50 transition-all cursor-pointer group">
+        <input type="file" id="imageInput" accept="image/*" onchange="handleImageSelect(event)" class="hidden">
+        
+        <label for="imageInput" class="cursor-pointer flex flex-col items-center justify-center space-y-2">
+          <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-sky-400 text-2xl shadow-inner group-hover:scale-110 transition-transform">
+            📸
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-slate-200">Click to browse or drag image here</p>
+            <p class="text-xs text-slate-500 mt-0.5">Supports text extraction in Arabic, French, Spanish, English</p>
+          </div>
+        </label>
+      </div>
+
+      <div id="imagePreviewContainer" class="hidden glass-card p-3 rounded-xl flex items-center gap-3 border border-slate-800">
+        <img id="imagePreview" class="w-16 h-16 object-cover rounded-lg border border-slate-700" alt="Scanned document preview">
+        <div class="flex-1 min-w-0">
+          <p id="imageFileName" class="text-xs font-semibold text-slate-200 truncate">image.jpg</p>
+          <p id="imageStatus" class="text-xs text-sky-400 font-medium mt-0.5">Ready for OCR text extraction</p>
+        </div>
+        <button onclick="clearImage()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg transition-colors">Clear</button>
+      </div>
+    </div>
+
+    <button id="processBtn" onclick="executeProcess()" class="w-full bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-600 hover:from-sky-400 hover:via-indigo-400 hover:to-purple-500 text-white font-extrabold py-4 px-6 rounded-xl transition-all shadow-lg shadow-sky-500/20 flex items-center justify-center gap-3 text-base tracking-wide">
+      <span>Shift & Explore</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+
+    <div id="progressBanner" class="hidden glass-panel p-4 rounded-xl border border-sky-500/30 text-center space-y-2">
+      <div class="inline-flex items-center gap-2 text-sky-400 font-bold text-sm">
+        <span class="inline-block animate-spin">⏳</span>
+        <span id="progressStatus">Scripty is analyzing script...</span>
+      </div>
+      <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+        <div id="progressBar" class="bg-gradient-to-r from-sky-400 to-indigo-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div id="unsupportedState" class="hidden glass-panel p-5 rounded-2xl border border-amber-500/40 bg-amber-950/20 text-center flex flex-col items-center justify-center space-y-2">
+      <div class="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-xl">
+        🤖💬
+      </div>
+      <h4 class="text-sm font-bold text-amber-300">Scripty Status</h4>
+      <p id="unsupportedText" class="text-xs text-amber-200/90 font-medium leading-relaxed max-w-sm">
+        Language not updated yet try next time
+      </p>
+    </div>
+
+    <div id="resultsSection" class="hidden space-y-4">
+      
+      <!-- Detected Language Tag -->
+      <div class="glass-panel p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Scripty Detection</span>
+          <span id="detectedLangTag" class="text-base font-extrabold text-sky-400">Arabic (AR)</span>
+        </div>
+      </div>
+
+      <!-- Translation Output Box -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-800 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">English Translation</span>
+          <button onclick="copyToClipboard('translatedOutput')" title="Copy Translation" class="bg-slate-800/80 hover:bg-sky-500/20 text-sky-400 border border-slate-700 hover:border-sky-500/40 px-3 py-1 rounded-lg transition-all flex items-center gap-1.5 text-xs font-semibold">
+            <span>📋 Copy</span>
+          </button>
+        </div>
+        <div id="translatedOutput" dir="auto" class="bg-slate-950/70 border border-slate-800/80 p-4 rounded-xl text-slate-200 text-base leading-relaxed min-h-[80px] font-medium">
+          Translation will appear here...
+        </div>
+      </div>
+
+      <!-- Wikipedia Hyperlink Button -->
+      <a id="wikiBtn" href="#" class="w-full glass-panel hover:bg-slate-800/90 text-slate-100 p-4 rounded-2xl font-semibold text-xs flex items-center justify-between border border-slate-800 transition-all group">
+        <span class="flex items-center gap-2">
+          <span>📖</span>
+          <span id="wikiBtnText">Explore Language History on Wikipedia</span>
+        </span>
+        <span class="text-slate-400 group-hover:text-slate-100 group-hover:translate-x-1 transition-all">→</span>
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="text-center text-xs text-slate-500 py-4">
+    ScriptShift &copy; Exhibition Reader Engine • Powered by Scripty AI
+  </footer>
+
+  <script>
+    let activeTab = 'text';
+    let selectedImageFile = null;
+
+    // Supported dictionary mapping language codes to readable Wikipedia names
+    const langMap = {
+      'ar': 'Arabic', 'fr': 'French', 'es': 'Spanish', 
+      'de': 'German', 'ja': 'Japanese', 'ru': 'Russian', 
+      'hi': 'Hindi', 'zh': 'Chinese', 'it': 'Italian',
+      'pt': 'Portuguese', 'ko': 'Korean', 'nl': 'Dutch',
+      'fa': 'Persian', 'tr': 'Turkish', 'ur': 'Urdu',
+      'sv': 'Swedish', 'pl': 'Polish', 'uk': 'Ukrainian',
+      'el': 'Greek', 'he': 'Hebrew', 'th': 'Thai', 'vi': 'Vietnamese'
+    };
+
+    function switchTab(tab) {
+      activeTab = tab;
+      ['Text', 'Image'].forEach(t => {
+        const btn = document.getElementById(`tab${t}Btn`);
+        const panel = document.getElementById(`panel${t}`);
+        if (t.toLowerCase() === tab) {
+          btn.classList.add('tab-active');
+          panel.classList.remove('hidden');
+        } else {
+          btn.classList.remove('tab-active');
+          panel.classList.add('hidden');
+        }
+      });
+    }
+
+    function handleImageSelect(event) {
+      const file = event.target.files[0];
+      if (file) processSelectedImage(file);
+    }
+    function handleDragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('border-sky-500'); }
+    function handleDragLeave(e) { e.preventDefault(); document.getElementById('dropZone').classList.remove('border-sky-500'); }
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropZone').classList.remove('border-sky-500');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) processSelectedImage(e.dataTransfer.files[0]);
+    }
+    function processSelectedImage(file) {
+      selectedImageFile = file;
+      document.getElementById('imageFileName').innerText = file.name;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('imagePreview').src = e.target.result;
+        document.getElementById('imagePreviewContainer').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+    function clearImage() {
+      selectedImageFile = null;
+      document.getElementById('imageInput').value = '';
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+    }
+
+    async function executeProcess() {
+      let rawText = '';
+      if (activeTab === 'text') {
+        rawText = document.getElementById('inputText').value.trim();
+        if (!rawText) return alert("Please enter or paste text first!");
+      } else {
+        if (!selectedImageFile) return alert("Please upload an image first!");
+        rawText = await performOCR(selectedImageFile);
+        if (!rawText || !rawText.trim()) {
+          showUnsupportedMessage();
+          hideProgress();
+          return;
+        }
+        document.getElementById('inputText').value = rawText;
+      }
+      await performTranslation(rawText);
+    }
+
+    async function performOCR(imageFile) {
+      showProgress("Scripty AI is initializing OCR...", 10);
+      try {
+        const worker = await Tesseract.createWorker('eng+ara+fra+spa+rus+deu+jpn+hin', 1, {
+          logger: m => {
+            if (m.status === 'recognizing text') {
+              showProgress(`Extracting Text: ${Math.round(m.progress * 100)}%`, Math.round(m.progress * 100));
+            }
+          }
+        });
+        const ret = await worker.recognize(imageFile);
+        await worker.terminate();
+        return ret.data.text;
+      } catch (err) { return ""; }
+    }
+
+    function polishTranslation(rawText) {
+      if (!rawText) return rawText;
+      return rawText
+        .replace(/\bour gallery\b/gi, 'our exhibition')
+        .replace(/\bour showroom\b/gi, 'our exhibition')
+        .replace(/\ba gallery\b/gi, 'an exhibition')
+        .replace(/\bthe gallery\b/gi, 'the exhibition');
+    }
+
+    function isGibberish(text, langCode) {
+      if (!text || !langCode) return true;
+      const cleanCode = langCode.trim().toLowerCase();
+      if (cleanCode.includes('invalid') || cleanCode.includes('autodetect') || cleanCode.length > 5 || 
+          text.includes('INVALID') || text.includes('MYMEMORY WARNING')) return true;
+      return false;
+    }
+
+    async function performTranslation(textToTranslate) {
+      showProgress("Scripty is detecting & translating...", 85);
+      try {
+        const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textToTranslate)}&langpair=autodetect|en`);
+        if (!response.ok) throw new Error("API Error");
+        
+        const data = await response.json();
+        const responseData = data.responseData;
+
+        if (!responseData || !responseData.translatedText || isGibberish(responseData.translatedText, responseData.detectedLanguage)) {
+          showUnsupportedMessage();
+          hideProgress();
+          return;
+        }
+
+        const rawTranslation = responseData.translatedText;
+        const detectedCode = (responseData.detectedLanguage || '').toLowerCase();
+        const langName = langMap[detectedCode];
+
+        if (!langName) {
+          showUnsupportedMessage();
+          hideProgress();
+          return;
+        }
+
+        // Apply context polisher
+        const polishedOutput = polishTranslation(rawTranslation);
+
+        // Render Results
+        document.getElementById('unsupportedState').classList.add('hidden');
+        document.getElementById('resultsSection').classList.remove('hidden');
+        document.getElementById('translatedOutput').innerText = polishedOutput;
+        document.getElementById('detectedLangTag').innerText = `${langName} (${detectedCode.toUpperCase()})`;
+
+        setupWikipediaButton(langName);
+        hideProgress();
+      } catch (error) {
+        showUnsupportedMessage();
+        hideProgress();
+      }
+    }
+
+    function setupWikipediaButton(langName) {
+      const wikiUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(langName)}_language`;
+      const wikiBtn = document.getElementById('wikiBtn');
+      document.getElementById('wikiBtnText').innerText = `Explore ${langName} Language History on Wikipedia`;
+
+      wikiBtn.onclick = function(e) {
+        e.preventDefault();
+        const newWin = window.open(wikiUrl, '_blank', 'noopener,noreferrer');
+        if (!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+          window.location.href = wikiUrl;
+        }
+      };
+    }
+
+    function showUnsupportedMessage() {
+      document.getElementById('resultsSection').classList.add('hidden');
+      document.getElementById('unsupportedState').classList.remove('hidden');
+      document.getElementById('unsupportedText').innerText = "Language not updated yet try next time";
+    }
+
+    function copyToClipboard(id) {
+      const text = document.getElementById(id).innerText;
+      if (!text) return;
+      const el = document.createElement('textarea');
+      el.value = text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      
+      const btn = event.currentTarget;
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<span>✅ Copied!</span>';
+      btn.classList.add('text-emerald-400', 'border-emerald-500/40');
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.classList.remove('text-emerald-400', 'border-emerald-500/40');
+      }, 2000);
+    }
+
+    function showProgress(msg, pct) {
+      document.getElementById('progressBanner').classList.remove('hidden');
+      document.getElementById('progressStatus').innerText = msg;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+    }
+    function hideProgress() { document.getElementById('progressBanner').classList.add('hidden'); }
+  </script>
+</body>
+</html>
