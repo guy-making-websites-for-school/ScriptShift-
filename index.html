@@ -15,7 +15,7 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 16px;
     }
 
     .container {
@@ -23,7 +23,7 @@
       backdrop-filter: blur(12px);
       width: 100%;
       max-width: 640px;
-      padding: 36px;
+      padding: 28px 24px;
       border-radius: 20px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -35,10 +35,10 @@
       box-shadow: 0 25px 50px rgba(56, 189, 248, 0.15);
     }
 
-    .header { text-align: center; margin-bottom: 24px; }
+    .header { text-align: center; margin-bottom: 20px; }
     
     .brand {
-      font-size: 36px;
+      font-size: clamp(28px, 6vw, 36px);
       font-weight: 800;
       background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
       background-size: 200% auto;
@@ -54,8 +54,8 @@
 
     .tagline {
       color: #94a3b8;
-      font-size: 14px;
-      margin-top: 6px;
+      font-size: clamp(12px, 3.5vw, 14px);
+      margin-top: 4px;
       font-weight: 500;
     }
 
@@ -63,15 +63,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
-      margin-top: 16px;
+      gap: 8px;
+      margin-top: 14px;
       flex-wrap: wrap;
     }
 
     .badge-item {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid #334155;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 600;
@@ -93,20 +93,20 @@
 
     .input-tabs {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 16px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       background: #0f172a;
       border: 1px solid #334155;
       color: #94a3b8;
       border-radius: 12px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
       transition: all 0.3s ease;
     }
 
@@ -123,7 +123,7 @@
       box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
     }
 
-    .input-panel { display: none; margin-bottom: 20px; }
+    .input-panel { display: none; margin-bottom: 18px; }
     .input-panel.active { display: block; }
 
     .textarea-wrapper {
@@ -132,13 +132,13 @@
 
     textarea {
       width: 100%;
-      height: 130px;
-      padding: 16px;
+      height: 120px;
+      padding: 14px;
       background: #0f172a;
       border: 2px solid #334155;
       border-radius: 12px;
       color: #f8fafc;
-      font-size: 16px;
+      font-size: 15px;
       resize: vertical;
       outline: none;
       transition: all 0.3s ease;
@@ -148,13 +148,13 @@
 
     textarea:focus {
       border-color: #38bdf8;
-      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
 
     .char-counter {
       position: absolute;
-      bottom: 12px;
-      right: 14px;
+      bottom: 10px;
+      right: 12px;
       font-size: 11px;
       color: #64748b;
       font-weight: 600;
@@ -164,7 +164,7 @@
     .file-drop {
       border: 2px dashed #334155;
       border-radius: 12px;
-      padding: 32px;
+      padding: 24px 16px;
       text-align: center;
       background: #0f172a;
       cursor: pointer;
@@ -178,15 +178,15 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
-    .file-drop p { color: #94a3b8; font-size: 14px; margin-top: 8px; }
+    .file-drop p { color: #94a3b8; font-size: 13px; margin-top: 8px; }
 
     .btn {
       width: 100%;
       background: linear-gradient(90deg, #38bdf8, #6366f1);
       color: #ffffff;
       border: none;
-      padding: 16px;
-      font-size: 16px;
+      padding: 14px;
+      font-size: 15px;
       font-weight: 700;
       border-radius: 12px;
       cursor: pointer;
@@ -214,10 +214,10 @@
     .btn:active { transform: translateY(0); }
 
     .results {
-      margin-top: 28px;
+      margin-top: 24px;
       display: none;
       border-top: 1px solid #334155;
-      padding-top: 24px;
+      padding-top: 20px;
       animation: fadeIn 0.4s ease-in-out;
     }
 
@@ -231,11 +231,11 @@
       background: rgba(56, 189, 248, 0.1);
       color: #38bdf8;
       border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       transition: all 0.3s ease;
     }
 
@@ -247,14 +247,14 @@
     .output-card {
       background: #0f172a;
       border: 1px solid #334155;
-      padding: 18px;
+      padding: 16px;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.6;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       word-break: break-word;
       color: #e2e8f0;
-      min-height: 60px;
+      min-height: 50px;
       transition: all 0.3s ease;
     }
 
@@ -266,7 +266,7 @@
     .action-row {
       display: flex;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .secondary-btn {
@@ -292,15 +292,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       background: #334155;
       color: #f8fafc;
-      padding: 14px;
+      padding: 12px;
       border-radius: 12px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 13px;
       border: 1px solid transparent;
+      text-align: center;
       transition: all 0.3s ease;
     }
 
@@ -309,6 +310,15 @@
       border-color: #38bdf8;
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Mobile specific responsiveness adjustments */
+    @media (max-width: 480px) {
+      body { padding: 10px; }
+      .container { padding: 20px 16px; }
+      .header-badges { flex-direction: column; width: 100%; gap: 6px; }
+      .badge-item { width: 100%; justify-content: center; text-align: center; }
+      .action-row { flex-direction: column; }
     }
   </style>
 </head>
