@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Use ScriptShift </title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    
+    body {
+      background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+      color: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .container {
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(12px);
+      width: 100%;
+      max-width: 640px;
+      padding: 28px 24px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .container:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 25px 50px rgba(56, 189, 248, 0.15);
+    }
+
+    .header { text-align: center; margin-bottom: 24px; }
+    
+    .brand {
+      font-size: clamp(26px, 5.5vw, 32px);
+      font-weight: 800;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      animation: shine 6s linear infinite;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .tagline {
+      color: #94a3b8;
+      font-size: clamp(12px, 3.5vw, 14px);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #38bdf8;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: #334155;
+      border-color: #38bdf8;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+    }
+
+    .step-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .step-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-num {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .step-desc {
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .supported-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .lang-pill {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #334155;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 10px; }
+      .container { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="index.html" class="back-btn">← Back to ScriptShifting</a>
+
+    <div class="header">
+      <div class="brand">User Instructions</div>
+      <div class="tagline">A quick guide on using ScriptShift </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <div class="step-title">
+        <span class="step-num">1</span> Choose Your Input Method
+      </div>
+      <div class="step-desc">
+        Select between two powerful modes:
+        <ul style="margin-top: 6px; padding-left: 20px;">
+          <li><b>Text Input:</b> Type or paste text in any script (Arabic, Japanese, Hindi, French, etc.). Automatic Right-To-Left (RTL) formatting triggers for Arabic scripts.</li>
+          <li><b>Image OCR:</b> Click to upload an image containing printed text to let Tesseract.js extract characters automatically(Still in Production).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <div class="step-title">
+        <span class="step-num">2</span> Translate & Polish Context
+      </div>
+      <div class="step-desc">
+        Click <b>Shift & Explore</b>. Scripty our AI will detect the language, translate the script, and pass the output in text.
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <div class="step-title">
+        <span class="step-num">3</span> Deep Dive into Script History
+      </div>
+      <div class="step-desc">
+        Click <b>Explore Language History on Wikipedia</b> to jump directly to detailed cultural background and linguistic history for the detected script.
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <div class="step-title">
+        <span class="step-num">4</span> Supported Direct Scripts
+      </div>
+      <div class="step-desc">
+        Scripty includes built-in deep-linking for 12 primary world scripts:
+        <div class="supported-list">
+          <span class="lang-pill">Arabic</span>
+          <span class="lang-pill">French</span>
+          <span class="lang-pill">Spanish</span>
+          <span class="lang-pill">German</span>
+          <span class="lang-pill">Japanese</span>
+          <span class="lang-pill">Russian</span>
+          <span class="lang-pill">Hindi</span>
+          <span class="lang-pill">Chinese</span>
+          <span class="lang-pill">Italian</span>
+          <span class="lang-pill">Portuguese</span>
+          <span class="lang-pill">Korean</span>
+          <span class="lang-pill">Dutch</span>
+          <span class="lang-pill">Don't worry new scripts coming soon!!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
